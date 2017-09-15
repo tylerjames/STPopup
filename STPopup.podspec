@@ -1,7 +1,12 @@
 Pod::Spec.new do |s|
   s.name         = "STPopup"
+<<<<<<< HEAD
   s.version      = "1.4.0"
   s.summary      = "STPopup provides STPopupController, which works just like UINavigationController in popup style, for both iPhone and iPad."
+=======
+  s.version      = "1.8.2"
+  s.summary      = "STPopup provides STPopupController, which works just like UINavigationController in form sheet/bottom sheet style, for both iPhone and iPad."
+>>>>>>> kevin0571/master
 
   s.description  = <<-DESC
                     - Extend your view controller from UIViewController, build it in your familiar way.
@@ -9,6 +14,7 @@ Pod::Spec.new do |s|
                     - Support both "Form Sheet" and "Bottom Sheet" style.
                     - Work well with storyboard(including segue).
                     - Customize UI by using UIAppearance.
+                    - Fully customizable popup transition style.
                     - Auto-reposition of popup view when keyboard is showing up, make sure your UITextField/UITextView won't be covered by the keyboard.
                     - Drag navigation bar to dismiss popup view.
                     - Support both portrait and landscape orientation, and both iPhone and iPad.

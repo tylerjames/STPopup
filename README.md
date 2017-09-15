@@ -7,6 +7,7 @@ STPopup provides STPopupController, which works just like UINavigationController
 - Support both "Form Sheet" and "Bottom Sheet" style.
 - Work well with storyboard(including segue).
 - Customize UI by using UIAppearance.
+- Fully customizable popup transition style.
 - Auto-reposition of popup view when keyboard is showing up, make sure your UITextField/UITextView won't be covered by the keyboard.
 - Drag navigation bar to dismiss popup view.
 - Support both portrait and landscape orientation, and both iPhone and iPad.
@@ -16,9 +17,14 @@ STPopup provides STPopupController, which works just like UINavigationController
 ![Sth4Me](https://cloud.githubusercontent.com/assets/1491282/9857827/8fa0125e-5b4f-11e5-9c0d-ff955c007360.gif)
 
 ## Get Started
+**CocoaPods**
 ```ruby
 platform :ios, '7.0'
 pod 'STPopup'
+```
+**Carthage**
+```ruby
+github "kevin0571/STPopup"
 ```
 **Import header file**
 ```objc
@@ -73,6 +79,38 @@ popupController.style = STPopupStyleBottomSheet;
 ```
 ![Bottom Sheet](https://cloud.githubusercontent.com/assets/1491282/10417963/7649f356-7080-11e5-8f3c-0cb817b8353e.gif)
 
+**Customize popup transition style**
+```objc
+#pragma mark - STPopupControllerTransitioning
+
+- (NSTimeInterval)popupControllerTransitionDuration:(STPopupControllerTransitioningContext *)context
+{
+    return context.action == STPopupControllerTransitioningActionPresent ? 0.5 : 0.35;
+}
+
+- (void)popupControllerAnimateTransition:(STPopupControllerTransitioningContext *)context completion:(void (^)())completion
+{
+    UIView *containerView = context.containerView;
+    if (context.action == STPopupControllerTransitioningActionPresent) {
+        containerView.transform = CGAffineTransformMakeTranslation(containerView.superview.bounds.size.width - containerView.frame.origin.x, 0);
+        
+        [UIView animateWithDuration:[self popupControllerTransitionDuration:context] delay:0 usingSpringWithDamping:1 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            context.containerView.transform = CGAffineTransformIdentity;
+        } completion:^(BOOL finished) {
+            completion();
+        }];
+    }
+    else {
+        [UIView animateWithDuration:[self popupControllerTransitionDuration:context] delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            containerView.transform = CGAffineTransformMakeTranslation(- 2 * (containerView.superview.bounds.size.width - containerView.frame.origin.x), 0);
+        } completion:^(BOOL finished) {
+            containerView.transform = CGAffineTransformIdentity;
+            completion();
+        }];
+    }
+}
+```
+
 **Blur background**
 ```objc
 STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[PopupViewController1 new]];
@@ -80,6 +118,12 @@ if (NSClassFromString(@"UIBlurEffect")) {
     UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
     popupController.backgroundView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
 }
+```
+
+**Dismiss by tapping background**
+```objc
+popupController = [[STPopupController alloc] initWithRootViewController:self];
+[popupController.backgroundView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backgroundViewDidTap)]];
 ```
 
 **Customize UI**

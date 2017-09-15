@@ -8,18 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@class STPopupNavigationBar;
-
-@protocol STPopupNavigationTouchEventDelegate <NSObject>
-
-- (void)popupNavigationBar:(STPopupNavigationBar *)navigationBar touchDidMoveWithOffset:(CGFloat)offset;
-- (void)popupNavigationBar:(STPopupNavigationBar *)navigationBar touchDidEndWithOffset:(CGFloat)offset;
-
-@end
+NS_ASSUME_NONNULL_BEGIN
 
 @interface STPopupNavigationBar : UINavigationBar
 
-@property (nonatomic, weak) id<STPopupNavigationTouchEventDelegate> touchEventDelegate;
-@property (nonatomic, assign) BOOL draggable; // Default: YES
+/**
+ Indicates if the navigation bar is draggable to dissmiss the popup.
+ Default to YES.
+ */
+@property (nonatomic, assign) BOOL draggable;
 
 @end
+
+NS_ASSUME_NONNULL_END
