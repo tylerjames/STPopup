@@ -300,7 +300,8 @@ static NSMutableSet *_retainedPopupControllers;
         [_containerView insertSubview:capturedView atIndex:0];
         
         [fromViewController.view removeFromSuperview];
-        
+
+        _backgroundView.userInteractionEnabled = NO;
         _containerView.userInteractionEnabled = NO;
         toViewController.view.alpha = 0;
         [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
@@ -312,7 +313,8 @@ static NSMutableSet *_retainedPopupControllers;
         } completion:^(BOOL finished) {
             [capturedView removeFromSuperview];
             [fromViewController removeFromParentViewController];
-            
+
+            _backgroundView.userInteractionEnabled = YES;
             _containerView.userInteractionEnabled = YES;
             [toViewController didMoveToParentViewController:_containerViewController];
             
